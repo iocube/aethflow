@@ -1,0 +1,181 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+<title>Flow project</title>
+<!-- <link rel="stylesheet" href="./css/bootstrap.min.css"/> -->
+<link rel="stylesheet" href="main.css"/>
+
+</head>
+
+<body>
+
+<!-- <div style="background:transparent !important" class="jumbotron">
+<div class="page-header">
+<h1 class="display-1">The Flow project</h1>
+<p class="lead">&nbsp &nbsp Aetherflow</p>
+<br>
+</div>
+</div>
+-->
+
+<h1> Flow project </h1>
+<h2> A dive into 3D by Kris </h2>
+
+
+	<script src="./js/three.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.4.0/gsap.min.js"></script>
+
+	<script>
+		var scene = new THREE.Scene(); //creating the scene
+		var camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000); //assigning camera with FOV, aspect ratio, something something
+		camera.position.z = 5;
+		
+		var renderer = new THREE.WebGLRenderer(); //renderer
+		renderer.setClearColor("#ff6666"); //background color
+		renderer.setSize(window.innerWidth,window.innerHeight); 
+		document.body.appendChild(renderer.domElement);
+		
+		window.addEventListener('resize', () => { //for auto window resizing
+			renderer.setSize(window.innerWidth,window.innerHeight);
+			camera.aspect = window.innerWidth / window.innerHeight;
+			camera.updateProjectionMatrix();
+		})
+		
+		renderer.render(scene, camera);
+		
+		var geometry = new THREE.BoxGeometry(1, 1, 1); //fodder squares
+		var material = new THREE.MeshLambertMaterial({color: 0xFFCC66});
+		//var mesh = new THREE.Mesh(geometry, material);
+		//scene.add(mesh);
+		
+		var maintextgeo = new THREE.BoxGeometry(4, 3, 0.2); //main text square; trying out textures; actually this is useless on differring resolutions
+		var maintextmat = new THREE.MeshLambertMaterial({color: 0xFFFFCC}); //why are they all in web safe instead of hex?
+		var maintextsquare = new THREE.Mesh(maintextgeo, maintextmat);
+		maintextsquare.position.x = -5.1;
+		maintextsquare.position.y = 1.8;
+		maintextsquare.position.z = 0;
+		maintextsquare.material.depthTest = false;
+		scene.add(maintextsquare);
+		
+		//linked in square
+		var linkedinsquaregeo = new THREE.BoxGeometry(0.5, 0.5, 0.2); //linkedinsquare
+		var textureLoader = new THREE.TextureLoader();
+		var texture = textureLoader.load( 'textures/linkin.png' );
+		texture.encoding = THREE.sRGBEncoding;
+		var material2 = new THREE.MeshStandardMaterial( {
+			map: texture,
+		} );
+		var linkedinsquaremat = new THREE.MeshLambertMaterial({color: 0xFFCC66});
+		var linkedinsquare = new THREE.Mesh(linkedinsquaregeo, [linkedinsquaremat,linkedinsquaremat,linkedinsquaremat,linkedinsquaremat,material2,linkedinsquaremat]);
+		linkedinsquare.position.x = (Math.random() - 0.5) * 10;
+		linkedinsquare.position.y = (Math.random() - 0.5) * 10;
+		linkedinsquare.position.z = (Math.random() - 1.5) * 10;
+		linkedinsquare.material.depthTest = false;
+		scene.add(linkedinsquare);
+		//linkedin square ends
+		
+		//github square
+		var gitsquaregeo = new THREE.BoxGeometry(0.5, 0.5, 0.2); //github square
+		var textureLoader = new THREE.TextureLoader();
+		var texture = textureLoader.load( 'textures/git.png' );
+		texture.encoding = THREE.sRGBEncoding;
+		var material2 = new THREE.MeshStandardMaterial( {
+			map: texture,
+		} );
+		var gitsquaremat = new THREE.MeshLambertMaterial({color: 0xFFCC66});
+		var gitsquare = new THREE.Mesh(gitsquaregeo, [gitsquaremat,gitsquaremat,gitsquaremat,gitsquaremat,material2,gitsquaremat]); // fifth face aka front has a texture rest is material per face
+		gitsquare.position.x = (Math.random() - 0.5) * 10;
+		gitsquare.position.y = (Math.random() - 0.5) * 10;
+		gitsquare.position.z = (Math.random() - 1.5) * 10;
+		gitsquare.material.depthTest = false;
+		scene.add(gitsquare);
+		//github square ends
+		
+
+		for (var i = 0; i < 25; i++) {
+			var mesh = new THREE.Mesh(geometry, material);
+			mesh.position.x = (Math.random() - 0.5) * 10;
+			mesh.position.y = (Math.random() - 0.5) * 10;
+			mesh.position.z = (Math.random() - 1.5) * 10; //trying to make the fodder squares all stay behind the maintext
+			scene.add(mesh);
+		}
+		
+		var light = new THREE.PointLight(0xFFFFF5, 1, 1000);
+		light.position.set(0,0,0);
+		scene.add(light);
+		
+		var light = new THREE.PointLight(0xFFFFF5, 1, 1000);
+		light.position.set(0,0,25);
+		scene.add(light);
+		
+		var render = function() {
+			requestAnimationFrame(render);
+			renderer.render(scene, camera);
+
+		}
+		var raycaster = new THREE.Raycaster();
+		var mouse = new THREE.Vector2();
+		
+		function onMouseMove(event) {
+			event.preventDefault();
+			mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+			mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+			
+			raycaster.setFromCamera(mouse, camera);
+			var intersects = raycaster.intersectObjects(scene.children, true);
+			for (var i = 0; i < intersects.length; i++) {
+				if (intersects[i].object == maintextsquare) { //huge loop so that the maintextbox doesn't rotate
+					}
+				else if (intersects[i].object == linkedinsquare) {
+					this.tl = new TimelineMax({paused: false});
+					this.tl.to(intersects[i].object.rotation, 2, {x: 0.05})
+					this.tl.to(intersects[i].object.rotation, 2, {x: 0})
+					}
+				else if (intersects[i].object == gitsquare) {
+					this.tl = new TimelineMax({paused: false});
+					this.tl.to(intersects[i].object.rotation, 2, {x: 0.05})
+					this.tl.to(intersects[i].object.rotation, 2, {x: 0})
+					}
+				else { //fix indentations
+					this.tl = new TimelineMax({paused: false});
+					this.tl.to(intersects[i].object.scale, 2, {x: 1, ease: Expo.easeOut})
+					this.tl.to(intersects[i].object.scale, 2, {x: .5, ease: Expo.easeOut})
+					this.tl.to(intersects[i].object.position, 5, {x: (Math.random() -0.5 )* 10, ease: Expo.easeOut}) //find out why it's choppy
+					this.tl.to(intersects[i].object.position, 5, {y: (Math.random() -0.5 )* 10, ease: Expo.easeOut}) //ps: these are all called sequentially
+					this.tl.to(intersects[i].object.position, 5, {z: (Math.random() -0.5 )* 10, ease: Expo.easeOut})
+					this.tl.to(intersects[i].object.rotation, 2, {y: Math.PI*.5}, "=-1.5")
+					this.tl.to(intersects[i].object.scale, 2, {x: 1, ease: Expo.easeOut})
+				}
+			}
+		}
+		
+		function hyperLink(event) {
+			event.preventDefault();
+			mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+			mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+			raycaster.setFromCamera(mouse, camera);
+			var intersects = raycaster.intersectObjects(scene.children, true);
+			for (var i = 0; i < intersects.length; i++) {
+				if (intersects[i].object == linkedinsquare) { 
+					window.open('https://www.linkedin.com/in/kris-arsenov-234173195/');
+				}
+				else if (intersects[i].object == gitsquare) {
+					window.open('https://github.com/iocube');
+				}
+			}
+		}
+		
+		render();
+		
+		
+		
+		window.addEventListener('mousemove', onMouseMove);
+		window.addEventListener('click', hyperLink);
+
+		
+		
+	</script>
+
+</body>
+</html>

@@ -1,0 +1,33 @@
+body {
+	margin: 0;
+	height: 100vh;
+	
+	overflow: hidden;
+}
+
+canvas {
+	display: block;
+}
+
+h1 {
+	font-family: Courier New;
+	position: absolute;
+	color: #14b1ab;
+	top: 4em;
+	left: 3em;
+	width: auto;
+	line-height: .8em;
+	border: 5px dotted #14b1ab;
+	padding: .2em;
+}
+
+h2 {
+	font-family: Courier New;
+	position: absolute;
+	color: #14b1ab;
+	top: 10em;
+	left: 6em;
+	width: auto;
+	line-height: .8em;
+	padding: .2em;
+}
