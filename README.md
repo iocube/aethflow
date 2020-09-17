@@ -5,8 +5,13 @@ Cubes are positioned randomly on page-load around the 3D scene space. Mouse-over
 All logos are property of their respective owners.
 
 <br />
+
 July 2020 <br />
-![Preview](/image-previews/NiALmMK.png) <br />
+
+![Preview](/image-previews/NiALmMK.png?raw=true) <br />
+
 <br />
+
 September 17 2020 <br />
-![Preview](/image-previews/tNMr5No.png) <br />
+
+![Preview](/image-previews/tNMr5No.png?raw=true) <br />
