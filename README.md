@@ -6,7 +6,7 @@ All logos are property of their respective owners.
 
 <br />
 July 2020 <br />
-![Initial](https://i.imgur.com/NiALmMK.png) <br />
+![07142020](https://i.imgur.com/NiALmMK.png) <br />
 
 September 17 2020 <br />
 ![09172020](https://i.imgur.com/tNMr5No.png) <br />
