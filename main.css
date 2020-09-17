@@ -9,6 +9,16 @@ canvas {
 	display: block;
 }
 
+.fakeBackground {
+	top: 6em;
+	position: absolute;
+	left: 4em;
+	width: 445px;
+	height: 260px;
+	background-color: #FFFFCC;
+	opacity: 0.7;
+}
+
 h1 {
 	font-family: Courier New;
 	position: absolute;
